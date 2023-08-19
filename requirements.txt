@@ -1,0 +1,2 @@
+# List of file requirements
+pygame==2.5.0

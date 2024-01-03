@@ -228,7 +228,7 @@ def update_interactions(playerSpaceShip: SpaceShip, enemyAsteroids: Asteroids):
         #xr_2 = enemyAsteroids.coordinates[j][0] - enemyAsteroids.img.get_width()/2
         c2 = enemyAsteroids.coordinates[j]
         asteroid_type = enemyAsteroids.asteroid_types[j]
-        if abs(c1[0] - c2[0]) <= 0.45 * (playerSpaceShip.sprite.get_width() + enemyAsteroids.images[asteroid_type].get_width()):
+        if abs(c1[0] - c2[0]) <= 0.4 * (playerSpaceShip.sprite.get_width() + enemyAsteroids.images[asteroid_type].get_width()):
            if abs(c1[1] - c2[1]) <= 0.15 * (playerSpaceShip.sprite.get_height() + enemyAsteroids.images[asteroid_type].get_height()):
                return 1
         j += 1
@@ -290,6 +290,8 @@ def run_level(SpaceWarsScreen, PlayerSpaceShip):
     EnemyAsteroids = Asteroids('./images/asteroids', screen_size)
     asteroid_refresh_at_counter = 10
     asteroid_refresh_counter = 0
+    asteroid_initial_speed = EnemyAsteroids.speed 
+    asteroid_acceleration = 0.005 # d(speed)/d(progress)
 
     background_scroll_speed = 0.3
     distance_traversed = 0
@@ -342,6 +344,7 @@ def run_level(SpaceWarsScreen, PlayerSpaceShip):
 
         EnemyAsteroids.show(SpaceWarsScreen)
 
+        # Show game end graphics
         if not game_active:
             # Display End Game
             if mission_accomplished:
@@ -361,6 +364,12 @@ def run_level(SpaceWarsScreen, PlayerSpaceShip):
             SpaceWarsScreen.blit(text,
                                  (screen_size[0]//2 - textRect[2]//2,
                                  screen_size[1]//2 + textRect[3] * 2))
+
+        # Update speed for progressive difficulty
+        if game_active:
+            EnemyAsteroids.speed = asteroid_initial_speed + \
+                                   asteroid_acceleration * progress
+
 
         # Display Progress
         progress_text = 'PROGRESS ' + str(progress).rjust(3) + "%"

@@ -39,7 +39,7 @@ The game is developed using pygame module.
 The key idea 💡 is to write some SOLID classes that can hopefully allow for a easily modifiable and extendable game.
 
 #### Script
-The current complexity allows for the game to coded in a single script, `./spacegame.py`. 
+The current complexity allows for the game to coded in a single script, `./project.py`. 
 The classes representing various game entitities and helper functions are bundled in this script.
 
 ##### Game Resources

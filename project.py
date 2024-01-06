@@ -235,7 +235,7 @@ def update_interactions(playerSpaceShip: SpaceShip, enemyAsteroids: Asteroids):
 
     return 0
 
-def demo(SpaceWarsScreen, PlayerSpaceShip):
+def demo():
 
     background_scroll_speed = 0.3
 
@@ -282,7 +282,7 @@ def demo(SpaceWarsScreen, PlayerSpaceShip):
 
     return
 
-def run_level(SpaceWarsScreen, PlayerSpaceShip):
+def run_level():
 
     font_small = pygame.font.Font(pygame.font.get_default_font(), 12)
     font_large = pygame.font.Font(pygame.font.get_default_font(), 15)
@@ -406,5 +406,5 @@ if __name__ == "__main__":
     PlayerSpaceShip = SpaceShip('./images/spaceship_01.png', screen_size)
 
     while True:
-        demo(SpaceWarsScreen, PlayerSpaceShip)
-        run_level(SpaceWarsScreen, PlayerSpaceShip)
+        demo()
+        run_level()

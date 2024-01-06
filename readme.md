@@ -1,7 +1,8 @@
 # Space Game
     #### Video Demo:  <URL HERE>
     #### Description:
-    Another space game where your is mission to reach the goal by evading celestial objects? - asteroids.
-    Powerful laser shots come in handy while evading. They wipe out anything on its way on the screen.
+    Blast through the cosmos in "Galactic Glide: Laser Squadron"! Navigate with your mouse, dodging asteroids with finesse. 
+    Unleash laser mayhem at the click of left mouse button, obliterating obstacles in your path. 
+    It's a stellar dance of precision and power—how far can your skills take you in this intergalactic escapade? 🖱️🚀
 
-    The mission progress is, ofcourse, shown by the progress bar.
+

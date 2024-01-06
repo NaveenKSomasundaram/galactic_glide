@@ -390,7 +390,7 @@ if __name__ == "__main__":
     # Create pygame session
     pygame.init()
     pygame.mouse.set_visible(0)
-    pygame.display.set_caption('Space Game')
+    pygame.display.set_caption('Galactic Glide')
     pygame_icon = pygame.image.load('./images/spaceship_01.png')
     pygame.display.set_icon(pygame_icon)
     

@@ -69,8 +69,8 @@ Note that the current shot wipes out "all" obstacles on its way.
 ###### Collision, Shooting Graphics
 Gameplay can be improved by including graphics for collision, obliterating obstacles etc.
 
+###### Sound effects
 
- 
 
 
 

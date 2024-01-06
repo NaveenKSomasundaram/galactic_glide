@@ -235,7 +235,7 @@ def update_interactions(playerSpaceShip: SpaceShip, enemyAsteroids: Asteroids):
 
     return 0
 
-def demo():
+def demo(SpaceWarsBackground, PlayerSpaceShip):
 
     background_scroll_speed = 0.3
 
@@ -282,7 +282,7 @@ def demo():
 
     return
 
-def run_level():
+def run_level(SpaceWarsBackground, PlayerSpaceShip):
 
     font_small = pygame.font.Font(pygame.font.get_default_font(), 12)
     font_large = pygame.font.Font(pygame.font.get_default_font(), 15)
@@ -385,6 +385,21 @@ def run_level():
             EnemyAsteroids.speed = 0
             asteroid_refresh_at_counter = 0
 
+def main():
+    """
+    Main game loop
+    """
+    # Create game entities
+    SpaceWarsBackground = ScrollingBackground(screen_size,
+                            './images/BackdropBlackLittleSparkBlack.png')
+
+    PlayerSpaceShip = SpaceShip('./images/spaceship_01.png', screen_size)
+    
+    while True:
+        demo(SpaceWarsBackground, PlayerSpaceShip)
+        run_level(SpaceWarsBackground, PlayerSpaceShip)
+
+
 if __name__ == "__main__":
 
     # Create pygame session
@@ -400,11 +415,5 @@ if __name__ == "__main__":
     screen_size = (250, 500)
     SpaceWarsScreen = pygame.display.set_mode(screen_size)
 
-    # Create game entities
-    SpaceWarsBackground = ScrollingBackground(screen_size,
-                            './images/BackdropBlackLittleSparkBlack.png')
-    PlayerSpaceShip = SpaceShip('./images/spaceship_01.png', screen_size)
-
-    while True:
-        demo()
-        run_level()
+    # Call game loop
+    main()

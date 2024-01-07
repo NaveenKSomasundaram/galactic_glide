@@ -123,6 +123,11 @@ class LaserShots():
         if self.count < self.max_count:
             self.coordinates.append([coordinate[0], coordinate[1]])
             self.count += 1
+    
+    def remove_laser(self, i):
+        if i >= 0 and i < len(self.coordinates):
+            self.coordinates.pop(i)
+            self.count -= 1
 
     def update(self):
         i = 0
@@ -209,28 +214,57 @@ def update_interactions(playerSpaceShip: SpaceShip, enemyAsteroids: Asteroids):
     i = 0
     remove_asteroids_id = []
     while i < len(playerSpaceShip.Lasers.coordinates):
-        c1 = playerSpaceShip.Lasers.coordinates[i]
+        point = playerSpaceShip.Lasers.coordinates[i]
         j = 0
+        has_hit_asteroid = False
         while j < len(enemyAsteroids.coordinates):
-            c2 = enemyAsteroids.coordinates[j]
             asteroid_type = enemyAsteroids.asteroid_types[j]
-            if abs(c1[0]-c2[0]) <= enemyAsteroids.images[asteroid_type].get_width()/2 and abs(c1[1]-c2[1]) <= enemyAsteroids.images[asteroid_type].get_height()/2:
+            square = (enemyAsteroids.coordinates[j][0],
+                      enemyAsteroids.coordinates[j][1],
+                      enemyAsteroids.images[asteroid_type].get_width(),
+                      enemyAsteroids.images[asteroid_type].get_height())
+            
+            has_hit_asteroid = is_point_in_square(point, square)
+            if has_hit_asteroid:
                 enemyAsteroids.remove(j)
-                continue
+                continue  
             j += 1
+
         i += 1
 
-    c1 = playerSpaceShip.coordinate
+        """
+        Code snippet to build less powerful laser
+        if not has_hit_asteroid:
+            i += 1
+        else:
+            playerSpaceShip.Lasers.remove_laser(i)
+        """
+
+    #c1 = playerSpaceShip.coordinate
+    square_1 = (playerSpaceShip.coordinate[0],
+                playerSpaceShip.coordinate[1],
+                playerSpaceShip.sprite.get_width(),
+                playerSpaceShip.sprite.get_height())
     j = 0
     while j < len(enemyAsteroids.coordinates):
         # The widths need correction based on actual asteroid coverage
         #xl_2 = enemyAsteroids.coordinates[j][0] - enemyAsteroids.img.get_width()/2
         #xr_2 = enemyAsteroids.coordinates[j][0] - enemyAsteroids.img.get_width()/2
-        c2 = enemyAsteroids.coordinates[j]
+        # c2 = enemyAsteroids.coordinates[j]
         asteroid_type = enemyAsteroids.asteroid_types[j]
+        square_2 = (enemyAsteroids.coordinates[j][0],
+                    enemyAsteroids.coordinates[j][1],
+                    enemyAsteroids.images[asteroid_type].get_width(),
+                    enemyAsteroids.images[asteroid_type].get_height())
+
+        if is_square_touching_square(square_1, square_2, scale_1=0.8, scale_2=0.9):
+            return 1
+        """          
         if abs(c1[0] - c2[0]) <= 0.4 * (playerSpaceShip.sprite.get_width() + enemyAsteroids.images[asteroid_type].get_width()):
-           if abs(c1[1] - c2[1]) <= 0.15 * (playerSpaceShip.sprite.get_height() + enemyAsteroids.images[asteroid_type].get_height()):
+           if abs(c1[1] - c2[1]) <= 0.4 * (playerSpaceShip.sprite.get_height() + enemyAsteroids.images[asteroid_type].get_height()):
                return 1
+        """
+
         j += 1
 
     return 0
@@ -319,7 +353,7 @@ def run_level(SpaceWarsBackground, PlayerSpaceShip):
         if game_active:
             distance_traversed += background_scroll_speed * time
        
-        progress = min(int(distance_traversed/250), 100)
+        progress = get_int_percentage(distance_traversed, 250)
         if progress == 100:
             game_active = False
             mission_accomplished = True
@@ -398,6 +432,50 @@ def main():
     while True:
         demo(SpaceWarsBackground, PlayerSpaceShip)
         run_level(SpaceWarsBackground, PlayerSpaceShip)
+
+# Helper Functions to satisfy CS50 Requirements
+
+def get_int_percentage(val, total):
+    """
+    Return progress percent int(val/total)
+    """
+    return max(min(int(val/total), 100), 0)
+
+def is_point_in_square(point, square):
+    """
+    Return true if point in square.
+
+    point [x, y]
+    square [center_x, center_y, width, height]
+    """
+    px, py = point
+    sx, sy, sw, sh = square
+
+    if px >= (sx - sw/2) and px <= (sx + sw/2):
+        if py >= (sy - sh/2) and py <= (sy + sh/2) :
+            return True
+    
+    return False
+
+def is_square_touching_square(square1, square2, scale_1=1.0, scale_2=1.0):
+    """
+    Return true if squares intersects
+
+    Use scale to control fairness of collision. For instane using 0.9
+    will not consider touching at 10% of boundary.
+    """
+    s1x, s1y, s1w, s1h = square1
+    s2x, s2y, s2w, s2h = square2
+
+    if abs(s1x - s2x) <= 0.5 * ((scale_1 * s1w) + (scale_2 * s2w)):
+        if abs(s1y - s2y) <= 0.5 * ((scale_1 * s1h) + (scale_2 * s2h)):
+            return True 
+    
+    return False
+
+
+
+
 
 
 if __name__ == "__main__":

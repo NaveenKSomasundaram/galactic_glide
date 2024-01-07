@@ -240,17 +240,12 @@ def update_interactions(playerSpaceShip: SpaceShip, enemyAsteroids: Asteroids):
             playerSpaceShip.Lasers.remove_laser(i)
         """
 
-    #c1 = playerSpaceShip.coordinate
     square_1 = (playerSpaceShip.coordinate[0],
                 playerSpaceShip.coordinate[1],
                 playerSpaceShip.sprite.get_width(),
                 playerSpaceShip.sprite.get_height())
     j = 0
     while j < len(enemyAsteroids.coordinates):
-        # The widths need correction based on actual asteroid coverage
-        #xl_2 = enemyAsteroids.coordinates[j][0] - enemyAsteroids.img.get_width()/2
-        #xr_2 = enemyAsteroids.coordinates[j][0] - enemyAsteroids.img.get_width()/2
-        # c2 = enemyAsteroids.coordinates[j]
         asteroid_type = enemyAsteroids.asteroid_types[j]
         square_2 = (enemyAsteroids.coordinates[j][0],
                     enemyAsteroids.coordinates[j][1],
@@ -259,12 +254,7 @@ def update_interactions(playerSpaceShip: SpaceShip, enemyAsteroids: Asteroids):
 
         if is_square_touching_square(square_1, square_2, scale_1=0.8, scale_2=0.9):
             return 1
-        """          
-        if abs(c1[0] - c2[0]) <= 0.4 * (playerSpaceShip.sprite.get_width() + enemyAsteroids.images[asteroid_type].get_width()):
-           if abs(c1[1] - c2[1]) <= 0.4 * (playerSpaceShip.sprite.get_height() + enemyAsteroids.images[asteroid_type].get_height()):
-               return 1
-        """
-
+     
         j += 1
 
     return 0
@@ -353,7 +343,7 @@ def run_level(SpaceWarsBackground, PlayerSpaceShip):
         if game_active:
             distance_traversed += background_scroll_speed * time
        
-        progress = get_int_percentage(distance_traversed, 250)
+        progress = get_int_percentage(distance_traversed, 25000)
         if progress == 100:
             game_active = False
             mission_accomplished = True
@@ -439,7 +429,16 @@ def get_int_percentage(val, total):
     """
     Return progress percent int(val/total)
     """
-    return max(min(int(val/total), 100), 0)
+    if total < 0:
+        raise ValueError
+
+    elif total == 0:
+        if val <= 0:
+            return 0
+        else:
+            return 100
+    
+    return int(max(min(round((val*100)/total, 0), 100), 0))
 
 def is_point_in_square(point, square):
     """
@@ -472,10 +471,6 @@ def is_square_touching_square(square1, square2, scale_1=1.0, scale_2=1.0):
             return True 
     
     return False
-
-
-
-
 
 
 if __name__ == "__main__":

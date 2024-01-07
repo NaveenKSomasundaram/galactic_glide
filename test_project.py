@@ -35,8 +35,10 @@ def test_is_point_in_square():
 
     # Test random points within square
     for i in range(100000):
-        point = (random.randrange(-square[2]/2, 1 + square[2]/2),
-                 random.randrange(-square[3]/2, 1 + square[3]/2))
+        hw = int(square[2]/2)
+        hh = int(square[3]/2)
+        point = (random.randrange(-hw, hw+1),
+                 random.randrange(-hh, hh+1))
 
         assert(pj.is_point_in_square(point, square) == True)
     
